@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { facts, diseases } from '@/data/knowledge'
 
+// public/ 下的资源需拼接 BASE_URL，部署到 /doctor/ 子路径时才不会 404
+const logoUrl = import.meta.env.BASE_URL + 'logo.svg'
+
 const router = useRouter()
 
 const modules = [
@@ -41,7 +44,7 @@ function goDisease(id) {
       </div>
       <div class="hero-top">
         <div class="brand">
-          <img src="/logo.svg" alt="蜱护 logo" class="logo" />
+          <img :src="logoUrl" alt="蜱护 logo" class="logo" />
           <div class="brand-text">
             <h1>蜱护 <span class="pin">TickGuard</span></h1>
             <p>蜱虫叮咬 · 自查 · 处理 · 科普</p>
