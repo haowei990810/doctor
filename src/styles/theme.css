@@ -1,0 +1,46 @@
+:root {
+  /* 主色：薄荷青绿（浅色系、清爽、医疗感） */
+  --c-primary: #3fbfa3;
+  --c-primary-deep: #2fa7b0;
+  --c-primary-soft: #6fe0c0;
+  --c-primary-050: #eefbf6;
+  --c-primary-100: #dcf6ec;
+
+  /* 功能色 */
+  --c-danger: #ff7a7a;
+  --c-danger-deep: #f2555f;
+  --c-warn: #ffb765;
+  --c-warn-deep: #f6a13d;
+  --c-info: #6db4f0;
+  --c-safe: #59cf9a;
+
+  /* 中性色 */
+  --c-bg: #f4faf8;
+  --c-bg-grad-a: #f0fbf7;
+  --c-bg-grad-b: #eef6fb;
+  --c-card: #ffffff;
+  --c-text: #1f3b38;
+  --c-text-sub: #5b7a76;
+  --c-text-weak: #9bb2ae;
+  --c-line: #e8f1ee;
+
+  /* 阴影 */
+  --shadow-sm: 0 2px 8px rgba(47, 167, 176, 0.08);
+  --shadow-md: 0 8px 24px rgba(47, 167, 176, 0.12);
+  --shadow-lg: 0 16px 40px rgba(47, 167, 176, 0.16);
+  --shadow-card: 0 6px 18px rgba(63, 191, 163, 0.10);
+
+  /* 圆角 */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+
+  /* 安全区 */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Vant 主题覆盖 */
+  --van-primary-color: var(--c-primary);
+  --van-tabbar-item-active-color: var(--c-primary-deep);
+}
