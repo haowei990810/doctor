@@ -12,15 +12,15 @@ const bodyParts = [
 
 <template>
   <div>
-    <AppHeader title="预防指南" subtitle="防蜱四步走，快乐户外不踩雷" back />
+    <AppHeader title="预防指南" subtitle="按地区与产品说明做好户外防护" back />
 
     <div class="page">
       <!-- 季节提示 -->
       <div class="season-card anim-fade-up">
         <div class="season-ico"><van-icon name="fire-o" /></div>
         <div>
-          <strong>4—10 月活跃期 · 5—7 月高发</strong>
-          <p>白天尤其清晨傍晚活跃，草地、灌木、林缘、牧场及城市绿化带都可能有蜱。</p>
+          <strong>我国多地 4—10 月需重点防护</strong>
+          <p>发热伴血小板减少综合征病例常在 5—7 月出现高峰，但各地季节不同；草地、灌木、林缘和牧场等均可能有蜱。</p>
         </div>
       </div>
 
@@ -73,7 +73,7 @@ const bodyParts = [
       <div class="section-title"><span class="bar" /> 出行装备清单</div>
       <div class="gear-grid">
         <div class="gear-item card"><van-icon name="gem-o" /><span>浅色长袖长裤</span></div>
-        <div class="gear-item card"><van-icon name="shield-o" /><span>避蚊胺驱避剂</span></div>
+        <div class="gear-item card"><van-icon name="shield-o" /><span>正规驱避剂</span></div>
         <div class="gear-item card"><van-icon name="brush-o" /><span>尖头除蜱镊</span></div>
         <div class="gear-item card"><van-icon name="bag-o" /><span>密封小袋/瓶</span></div>
         <div class="gear-item card"><van-icon name="balance-o" /><span>75%酒精/碘伏</span></div>
@@ -82,7 +82,7 @@ const bodyParts = [
 
       <div class="foot-note">
         <van-icon name="info-o" />
-        以上防护建议整理自中国疾控中心、央视新闻等公开科普资料。
+        以上防护建议依据中国疾控中心、国家疾控局和 CDC 公开指南整理，请按产品标签使用驱避剂。
       </div>
     </div>
   </div>

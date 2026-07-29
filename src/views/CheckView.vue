@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { symptomChecklist, evaluate } from '@/data/knowledge'
 import AppHeader from '@/components/AppHeader.vue'
@@ -11,7 +11,7 @@ const bump = ref(false)
 
 function toggle(item) {
   checked.value[item.id] = !checked.value[item.id]
-  // 触发风险条的“跳动”反馈
+  // 触发分级提示条的轻量反馈
   bump.value = true
   setTimeout(() => (bump.value = false), 320)
 }
@@ -20,32 +20,20 @@ const selectedCount = computed(
   () => Object.values(checked.value).filter(Boolean).length
 )
 
-const score = computed(() => {
-  let s = 0
-  symptomChecklist.forEach((g) =>
-    g.items.forEach((it) => {
-      if (checked.value[it.id]) s += it.weight
-    })
-  )
-  return s
-})
-
-const hasKey = computed(() =>
-  symptomChecklist.some((g) =>
-    g.items.some((it) => it.key && checked.value[it.id])
-  )
+const selectedIds = computed(() =>
+  Object.entries(checked.value)
+    .filter(([, value]) => value)
+    .map(([id]) => id)
 )
 
-const result = computed(() => evaluate(score.value, hasKey.value))
+const result = computed(() => evaluate(selectedIds.value))
 
-// 实时风险条：与评估分级（低/需观察/就医）保持一致，避免“红色文案却只有半格”的错位
-const riskPercent = computed(() => {
+// 只用于三档视觉提示，不代表患病概率或医学评分。
+const actionProgress = computed(() => {
   if (selectedCount.value === 0) return 0
-  const pct = Math.round((score.value / 12) * 100)
-  const level = result.value.level
-  if (level === 'high') return Math.min(100, Math.max(80, pct))
-  if (level === 'mid') return Math.min(78, Math.max(45, pct))
-  return Math.min(40, Math.max(12, pct))
+  if (result.value.level === 'emergency') return 100
+  if (result.value.level === 'urgent') return 62
+  return 24
 })
 
 const riskLabel = computed(() => {
@@ -54,6 +42,9 @@ const riskLabel = computed(() => {
 })
 const riskColor = computed(() =>
   selectedCount.value === 0 ? '#9bb2ae' : result.value.color
+)
+const actionLabel = computed(() =>
+  selectedCount.value === 0 ? '待选择' : result.value.actionLabel
 )
 
 function openResult() {
@@ -73,28 +64,30 @@ function groupSelected(group) {
 
 <template>
   <div>
-    <AppHeader title="症状自查" subtitle="勾选出现的情况，实时评估风险" back />
+    <AppHeader title="症状自查" subtitle="分级提示下一步，不计算患病概率" back />
 
-    <!-- 顶部实时风险仪表（sticky）：每次勾选即时反馈 -->
-    <div class="risk-panel">
+    <!-- 顶部行动分级提示（sticky）：不是患病概率或医学评分 -->
+    <div class="risk-panel" aria-live="polite">
       <div class="risk-top">
         <div class="risk-meta">
           <span class="risk-label" :style="{ color: riskColor }">{{ riskLabel }}</span>
-          <span class="risk-sub">已选 {{ selectedCount }} 项 · 风险分 {{ score }}</span>
+          <span class="risk-sub">
+            {{ selectedCount ? `已选 ${selectedCount} 项 · 行动分级（非诊断）` : '请按实际情况勾选' }}
+          </span>
         </div>
         <div class="risk-score" :class="{ bump }" :style="{ color: riskColor }">
-          {{ riskPercent }}<small>%</small>
+          {{ actionLabel }}
         </div>
       </div>
       <div class="risk-track">
         <div
           class="risk-fill"
           :class="{ bump }"
-          :style="{ width: riskPercent + '%', background: `linear-gradient(90deg, ${riskColor}aa, ${riskColor})` }"
+          :style="{ width: actionProgress + '%', background: `linear-gradient(90deg, ${riskColor}aa, ${riskColor})` }"
         />
       </div>
       <div class="risk-scale">
-        <span>低</span><span>需观察</span><span>尽快就医</span>
+        <span>继续观察</span><span>尽快就医</span><span>急诊处理</span>
       </div>
     </div>
 
@@ -120,17 +113,22 @@ function groupSelected(group) {
             <li
               v-for="item in group.items"
               :key="item.id"
-              class="opt tappable"
-              :class="{ on: checked[item.id] }"
-              @click="toggle(item)"
             >
-              <span class="checkbox" :class="{ on: checked[item.id] }">
-                <van-icon v-if="checked[item.id]" name="success" />
-              </span>
-              <span class="opt-text">
-                {{ item.text }}
-                <em v-if="item.key" class="key-flag">关键信号</em>
-              </span>
+              <button
+                type="button"
+                class="opt tappable"
+                :class="{ on: checked[item.id] }"
+                :aria-pressed="Boolean(checked[item.id])"
+                @click="toggle(item)"
+              >
+                <span class="checkbox" :class="{ on: checked[item.id] }">
+                  <van-icon v-if="checked[item.id]" name="success" />
+                </span>
+                <span class="opt-text">
+                  {{ item.text }}
+                  <em v-if="item.flag" class="key-flag" :class="item.triage">{{ item.flag }}</em>
+                </span>
+              </button>
             </li>
           </ul>
         </section>
@@ -141,10 +139,11 @@ function groupSelected(group) {
         <button
           class="eval-btn tappable"
           :class="{ disabled: selectedCount === 0 }"
+          :disabled="selectedCount === 0"
           @click="openResult"
         >
           <van-icon name="records" />
-          {{ selectedCount === 0 ? '请先勾选症状' : `查看评估建议 (${selectedCount})` }}
+          {{ selectedCount === 0 ? '请先勾选症状' : `查看行动建议 (${selectedCount})` }}
         </button>
         <button v-if="selectedCount" class="reset-link" @click="reset">
           <van-icon name="replay" /> 清空重选
@@ -152,7 +151,7 @@ function groupSelected(group) {
       </div>
 
       <p class="mini-tip">
-        <van-icon name="info-o" /> 本自查仅供参考，不作为医疗诊断依据。
+        <van-icon name="info-o" /> 本工具不计算患病概率，不能排除疾病或替代医生诊断。
       </p>
     </div>
 
@@ -170,12 +169,12 @@ function groupSelected(group) {
           <div class="result-ring" :style="{ borderColor: result.color }">
             <span class="pulse" :style="{ background: result.color }" />
             <van-icon
-              :name="result.level === 'low' ? 'checked' : 'warning'"
+              :name="result.level === 'observe' ? 'checked' : 'warning'"
               :style="{ color: result.color }"
             />
           </div>
           <h2 :style="{ color: result.color }">{{ result.title }}</h2>
-          <div class="score-chip">风险评分 {{ score }} · 已选 {{ selectedCount }} 项</div>
+          <div class="score-chip">已选 {{ selectedCount }} 项 · 行动分级，不是诊断</div>
         </div>
 
         <div class="result-body">
@@ -189,9 +188,9 @@ function groupSelected(group) {
             </li>
           </ul>
 
-          <!-- 高风险直达急救 -->
-          <a v-if="result.level === 'high'" class="call-btn tappable" href="tel:120">
-            <van-icon name="phone-o" /> 情况紧急？拨打 120
+          <!-- 仅明确急症信号直达急救 -->
+          <a v-if="result.level === 'emergency'" class="call-btn tappable" href="tel:120">
+            <van-icon name="phone-o" /> 立即拨打 120
           </a>
 
           <div class="result-actions">
@@ -199,7 +198,7 @@ function groupSelected(group) {
               <van-icon name="plus" /> 处理方法
             </button>
             <button class="primary-btn tappable" @click="router.push('/disease')">
-              <van-icon name="notes-o" /> 可能疾病
+              <van-icon name="notes-o" /> 了解相关疾病
             </button>
           </div>
           <button class="link-btn" @click="reset">重新自查</button>
@@ -230,6 +229,7 @@ function groupSelected(group) {
 .risk-meta {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 .risk-label {
   font-size: 16px;
@@ -242,14 +242,13 @@ function groupSelected(group) {
   margin-top: 2px;
 }
 .risk-score {
-  font-size: 26px;
+  flex-shrink: 0;
+  margin-left: 12px;
+  font-size: 17px;
   font-weight: 800;
   line-height: 1;
+  white-space: nowrap;
   transition: color 0.3s ease, transform 0.3s ease;
-}
-.risk-score small {
-  font-size: 13px;
-  font-weight: 700;
 }
 .risk-score.bump {
   transform: scale(1.14);
@@ -313,11 +312,16 @@ function groupSelected(group) {
   gap: 2px;
 }
 .opt {
+  width: 100%;
+  border: none;
+  background: transparent;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 10px;
   border-radius: var(--r-sm);
+  text-align: left;
+  font-family: inherit;
   transition: background 0.2s ease;
 }
 .opt.on {
@@ -350,12 +354,16 @@ function groupSelected(group) {
   font-style: normal;
   font-size: 10px;
   font-weight: 700;
-  color: var(--c-danger-deep);
-  background: #fff0f0;
+  color: var(--c-warn-deep);
+  background: #fff7ec;
   padding: 1px 6px;
   border-radius: 999px;
   margin-left: 4px;
   vertical-align: middle;
+}
+.key-flag.emergency {
+  color: var(--c-danger-deep);
+  background: #fff0f0;
 }
 
 /* 行内操作 */

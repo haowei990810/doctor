@@ -9,7 +9,7 @@ const logoUrl = import.meta.env.BASE_URL + 'logo.svg'
 const router = useRouter()
 
 const modules = [
-  { key: 'check', title: '症状自查', desc: '勾选症状·实时评估', icon: 'search', path: '/check', from: '#6fe0c0', to: '#3fbfa3' },
+  { key: 'check', title: '症状自查', desc: '识别信号·行动分级', icon: 'search', path: '/check', from: '#6fe0c0', to: '#3fbfa3' },
   { key: 'handle', title: '正确处理', desc: '六步拔虫·避坑', icon: 'plus', path: '/handle', from: '#8fd3ff', to: '#6db4f0' },
   { key: 'disease', title: '疾病百科', desc: '六大蜱媒疾病', icon: 'notes-o', path: '/disease', from: '#ffd18c', to: '#f6a13d' },
   { key: 'prevent', title: '预防指南', desc: '户外防护要点', icon: 'shield-o', path: '/prevent', from: '#a6e3b8', to: '#59cf9a' }
@@ -17,9 +17,9 @@ const modules = [
 
 // 首页直给的“应急三步”，让被咬用户无需跳转即可获得核心指引
 const emergency = [
-  { no: 1, title: '别硬拔·别火烧', desc: '硬拔/拍打/火烧/涂油都会让蜱虫注入更多毒素', icon: 'warning-o', bad: true },
-  { no: 2, title: '尖镊贴皮垂直拔', desc: '尖头镊子贴皮肤夹住头部，垂直匀速向上拔出', icon: 'aim' },
-  { no: 3, title: '消毒并观察就医', desc: '碘伏消毒，2-4 周内发热/皮疹立即就医并说明咬史', icon: 'eye-o' }
+  { no: 1, title: '别火烧·别涂油', desc: '这些方法不能可靠脱蜱，可能刺激蜱、延误移除或灼伤皮肤', icon: 'warning-o', bad: true },
+  { no: 2, title: '镊子贴皮稳定拔', desc: '镊子贴近皮肤夹住虫体，持续、稳定地垂直向上拉出', icon: 'aim' },
+  { no: 3, title: '清洁并观察症状', desc: '清洁伤口，重点观察 2 周；之后数周仍留意发热、扩大皮疹等', icon: 'eye-o' }
 ]
 
 const previewDiseases = diseases.slice(0, 3)
@@ -56,7 +56,7 @@ function goDisease(id) {
         <div class="hc-left">
           <div class="hc-badge">被蜱虫咬了？先别慌</div>
           <h2>3 步搞清怎么办</h2>
-          <p>自查症状 → 判断风险 → 科学处理</p>
+          <p>识别信号 → 行动分级 → 科学处理</p>
         </div>
         <div class="hc-tick" aria-hidden="true">
           <div class="tick-body">
@@ -142,7 +142,7 @@ function goDisease(id) {
           <span class="d-main">
             <span class="d-top">
               <strong>{{ d.name }}</strong>
-              <em class="d-badge" :style="{ background: d.color }">{{ d.levelText }}</em>
+              <em class="d-badge" :style="{ background: d.color }">{{ d.category }}</em>
             </span>
             <small class="d-sum">{{ d.summary }}</small>
           </span>
@@ -169,7 +169,7 @@ function goDisease(id) {
       <!-- 免责声明 -->
       <div class="disclaimer">
         <van-icon name="info-o" />
-        <p>本站为健康科普信息，整理自中国疾控中心、中华医学会等公开资料，不能替代专业医疗诊断。出现不适请及时就医。</p>
+        <p>本站为健康科普与行动提示，不能计算患病概率、排除疾病或替代医生诊断。出现发热、扩大皮疹等请尽快就医；呼吸困难、意识改变等急症请拨打 120。</p>
       </div>
     </div>
   </div>

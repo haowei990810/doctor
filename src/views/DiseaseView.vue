@@ -1,22 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { diseases } from '@/data/knowledge'
 import AppHeader from '@/components/AppHeader.vue'
 
 const router = useRouter()
-
-const filters = [
-  { key: 'all', label: '全部' },
-  { key: 'high', label: '危重' },
-  { key: 'mid', label: '需重视' }
-]
-const active = ref('all')
-
-const list = computed(() => {
-  if (active.value === 'all') return diseases
-  return diseases.filter((d) => d.level === active.value)
-})
 
 function goDetail(id) {
   router.push(`/disease/${id}`)
@@ -25,25 +12,12 @@ function goDetail(id) {
 
 <template>
   <div>
-    <AppHeader title="疾病百科" subtitle="蜱虫可传播 20 余种疾病，认识常见 6 种" back />
+    <AppHeader title="疾病百科" subtitle="认识 6 种常见蜱相关疾病" back />
 
     <div class="page">
-      <!-- 过滤 -->
-      <div class="filters">
-        <button
-          v-for="f in filters"
-          :key="f.key"
-          class="filter-chip tappable"
-          :class="{ on: active === f.key }"
-          @click="active = f.key"
-        >
-          {{ f.label }}
-        </button>
-      </div>
-
       <div class="d-list stagger">
         <button
-          v-for="d in list"
+          v-for="d in diseases"
           :key="d.id"
           class="d-row tappable"
           @click="goDetail(d.id)"
@@ -54,7 +28,7 @@ function goDetail(id) {
           <span class="d-main">
             <span class="d-top">
               <strong>{{ d.name }}</strong>
-              <em class="d-badge" :style="{ background: d.color }">{{ d.levelText }}</em>
+              <em class="d-badge" :style="{ background: d.color }">{{ d.category }}</em>
             </span>
             <small class="d-alias">{{ d.alias }}</small>
             <small class="d-sum">{{ d.summary }}</small>
@@ -68,40 +42,18 @@ function goDetail(id) {
 
       <div class="foot-note">
         <van-icon name="info-o" />
-        资料整理自中华医学会、中国疾控中心等公开科普，具体诊断请以医院检查为准。
+        资料依据中国疾控中心等公开指南整理，仅用于识别就医信号；具体诊断与治疗以正规医疗机构为准。
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.filters {
-  display: flex;
-  gap: 10px;
-  margin: 14px 0 4px;
-}
-.filter-chip {
-  border: 1px solid var(--c-line);
-  background: #fff;
-  color: var(--c-text-sub);
-  border-radius: 999px;
-  padding: 7px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-.filter-chip.on {
-  color: #fff;
-  border-color: transparent;
-  background: linear-gradient(145deg, var(--c-primary-soft), var(--c-primary-deep));
-  box-shadow: 0 5px 12px rgba(47, 167, 176, 0.28);
-}
-
 .d-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 .d-row {
   border: none;

@@ -14,7 +14,7 @@ const infoRows = computed(() => {
   return [
     { label: '病原体', value: disease.value.pathogen, icon: 'cluster-o' },
     { label: '潜伏期', value: disease.value.incubation, icon: 'clock-o' },
-    { label: '危险等级', value: disease.value.levelText, icon: 'fire-o' }
+    { label: '类型', value: disease.value.category, icon: 'label-o' }
   ]
 })
 </script>
@@ -34,7 +34,7 @@ const infoRows = computed(() => {
             <van-icon :name="disease.icon" />
           </span>
           <span class="ov-level" :style="{ background: disease.color }">
-            {{ disease.levelText }}
+            {{ disease.category }}
           </span>
         </div>
         <p class="ov-summary">{{ disease.summary }}</p>

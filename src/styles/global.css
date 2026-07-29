@@ -121,11 +121,6 @@ li {
   font-weight: 600;
 }
 
-/* 危险等级色块 */
-.level-high { color: var(--c-danger-deep); }
-.level-mid { color: var(--c-warn-deep); }
-.level-low { color: var(--c-safe); }
-
 .dot {
   width: 8px;
   height: 8px;
@@ -135,19 +130,14 @@ li {
 
 /* ============ 动画 ============ */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { transform: translateY(16px); }
+  to { transform: translateY(0); }
 }
 
 @keyframes pop {
-  0% { transform: scale(0.9); opacity: 0; }
+  0% { transform: scale(0.9); }
   60% { transform: scale(1.03); }
-  100% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
 @keyframes floatY {
@@ -196,14 +186,14 @@ li {
   transform: scale(0.97);
 }
 
-/* 路由切换：纯 CSS 入场动画（不依赖 JS/requestAnimationFrame，
-   组件按 route key 同步换出，杜绝旧页残留/重叠或卡住） */
+/* 入场动画只做位移/缩放，不改变可见性。即使 WebView 冻结动画，
+   页面内容也始终可见；组件仍按 route key 同步换出。 */
 .route-view {
   animation: routeIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes routeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
 }
 
 /* 尊重用户的减少动画偏好 */

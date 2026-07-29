@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <AppHeader title="正确处理" subtitle="拔 · 清 · 观 · 存，科学移除是关键" back />
+    <AppHeader title="正确处理" subtitle="尽快移除 · 清洁 · 记录 · 观察" back />
 
     <div class="page">
       <!-- 顶部警示 -->
@@ -25,7 +25,7 @@ onMounted(async () => {
         <div class="alert-ico"><van-icon name="warning-o" /></div>
         <div>
           <strong>发现正在吸血的蜱虫，先冷静！</strong>
-          <p>错误处理比叮咬本身更危险，切勿硬拔、拍打或火烧。</p>
+          <p>应尽快用镊子稳定移除；不要火烧、涂油、捏压或反复扭拽。</p>
         </div>
       </div>
 
@@ -63,11 +63,11 @@ onMounted(async () => {
       </div>
 
       <!-- 就医指征 -->
-      <div id="doctor" class="section-title"><span class="bar" /> 何时必须就医</div>
+      <div id="doctor" class="section-title"><span class="bar" /> 何时就医或急诊</div>
       <div class="card doctor-card">
         <p class="doctor-tip">
-          出现以下任一情况，请尽快前往医院（感染科/急诊），并主动告知医生
-          <em>“我被蜱虫咬过”</em>：
+          请按症状紧急程度就医，并主动告知医生
+          <em>“我有蜱叮咬或野外暴露史”</em>：
         </p>
         <ul class="doctor-list">
           <li v-for="(sign, i) in seeDoctorSigns" :key="i">
@@ -76,7 +76,7 @@ onMounted(async () => {
           </li>
         </ul>
         <a class="call-btn tappable" href="tel:120">
-          <van-icon name="phone-o" /> 紧急情况拨打 120
+          <van-icon name="phone-o" /> 呼吸/意识等急症拨打 120
         </a>
       </div>
 
@@ -84,8 +84,8 @@ onMounted(async () => {
       <div class="watch-card">
         <van-icon name="clock-o" />
         <div>
-          <strong>移除后持续观察 2～4 周</strong>
-          <p>密切留意体温、皮疹（牛眼征）、乏力等；蜱麻痹多在叮咬后 4-7 天出现。记录叮咬时间，保存虫体供医生识别。</p>
+          <strong>重点观察 2 周，之后数周仍需留意</strong>
+          <p>记录叮咬与移除时间，留意发热、逐渐扩大的红斑、明显乏力等。进行性肢体无力、呼吸困难、意识改变或大量难止出血属于急症信号。</p>
         </div>
       </div>
     </div>
