@@ -6,8 +6,9 @@ import { fileURLToPath, URL } from 'node:url'
 
 // 轻量化：Vant 按需自动引入，仅打包用到的组件与样式
 export default defineConfig(() => ({
-  // 部署在根路径（Cloudflare Workers）：统一用 '/'，避免资源 /doctor/ 前缀导致 404 白屏
-  base: '/',
+  // 用相对路径 './'：同时兼容根路径(Cloudflare)与子路径(GitHub Pages /doctor/)，
+  // 避免资源 404 白屏。配合 hash 路由，页面刷新也不丢资源。
+  base: './',
   plugins: [
     vue(),
     Components({
