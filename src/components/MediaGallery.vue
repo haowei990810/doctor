@@ -39,6 +39,8 @@ function onTap(index) {
           class="g-img"
           :class="{ blurred: sensitive && !revealed[i] }"
           loading="lazy"
+          decoding="async"
+          fetchpriority="low"
         />
         <span v-if="it.tag" class="g-tag">{{ it.tag }}</span>
         <span v-if="sensitive && !revealed[i]" class="g-mask">
