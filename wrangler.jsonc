@@ -1,0 +1,15 @@
+{
+  // ⚠️ name 必须与你在 Cloudflare 控制台里的项目名一致
+  // （即部署地址 https://<name>.<账户>.workers.dev 中的 <name>）。
+  // 你当前项目可能叫 doctor，请按实际情况修改。
+  "name": "doctor",
+  "compatibility_date": "2025-06-05",
+
+  // 纯静态站点（Vue SPA）：只把 Vite 构建产物 dist 目录作为静态资源发布，
+  // 不需要 main / Worker 脚本。这样 `wrangler deploy` 就不会再去解析 vite.config.js。
+  "assets": {
+    "directory": "./dist",
+    // 单页应用：任意未命中路径都回退到 index.html（history 模式也不会 404）
+    "not_found_handling": "single-page-application"
+  }
+}
