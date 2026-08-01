@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { symptomChecklist, evaluate } from '@/data/knowledge'
+import { symptomGallery } from '@/data/media'
+import MediaGallery from '@/components/MediaGallery.vue'
 import AppHeader from '@/components/AppHeader.vue'
 
 const router = useRouter()
@@ -132,6 +134,18 @@ function groupSelected(group) {
             </li>
           </ul>
         </section>
+      </div>
+
+      <!-- 皮肤表现对照：真实图片（默认模糊，点按查看） -->
+      <div class="ref-block">
+        <div class="ref-head">
+          <span class="ref-ico"><van-icon name="photo-o" /></span>
+          <div>
+            <strong>皮肤表现对照图</strong>
+            <small>真实医学图片，默认模糊，点击后查看</small>
+          </div>
+        </div>
+        <MediaGallery :items="symptomGallery" sensitive />
       </div>
 
       <!-- 行内操作区（随内容滚动，不与底部导航冲突） -->
@@ -364,6 +378,38 @@ function groupSelected(group) {
 .key-flag.emergency {
   color: var(--c-danger-deep);
   background: #fff0f0;
+}
+
+/* 皮肤对照图区块 */
+.ref-block {
+  margin-top: 18px;
+}
+.ref-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ref-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--c-primary-050);
+  color: var(--c-primary-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.ref-head strong {
+  font-size: 14.5px;
+  color: var(--c-text);
+  display: block;
+}
+.ref-head small {
+  font-size: 11px;
+  color: var(--c-text-weak);
 }
 
 /* 行内操作 */

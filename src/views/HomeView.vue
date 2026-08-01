@@ -2,9 +2,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { facts, diseases } from '@/data/knowledge'
+import { tickGallery, tickVideo } from '@/data/media'
+import MediaGallery from '@/components/MediaGallery.vue'
 
 // public/ 下的资源需拼接 BASE_URL，部署到 /doctor/ 子路径时才不会 404
 const logoUrl = import.meta.env.BASE_URL + 'logo.svg'
+const videoSrc = import.meta.env.BASE_URL + tickVideo.src.replace(/^\//, '')
+const videoPoster = import.meta.env.BASE_URL + tickVideo.poster.replace(/^\//, '')
 
 const router = useRouter()
 
@@ -122,6 +126,29 @@ function goDisease(id) {
             <small>{{ m.desc }}</small>
           </span>
         </button>
+      </div>
+
+      <!-- 识别蜱虫：真实图片 + 视频 -->
+      <div class="section-title"><span class="bar" /> 蜱虫长什么样</div>
+      <p class="sec-sub">下面是真实蜱虫照片，帮助你在户外和皮肤上快速识别。</p>
+      <MediaGallery :items="tickGallery" />
+
+      <!-- 科普视频 -->
+      <div class="video-card">
+        <video
+          class="tick-video"
+          :src="videoSrc"
+          :poster="videoPoster"
+          controls
+          playsinline
+          webkit-playsinline
+          preload="none"
+        />
+        <div class="video-cap">
+          <strong>{{ tickVideo.title }}</strong>
+          <small>{{ tickVideo.desc }}</small>
+          <span class="v-credit">{{ tickVideo.credit }}</span>
+        </div>
       </div>
 
       <!-- 常见蜱媒疾病：纵向列表 -->
@@ -502,6 +529,50 @@ function goDisease(id) {
   overflow: hidden;
 }
 .d-arrow { color: var(--c-text-weak); flex-shrink: 0; }
+
+/* 小节副标题 */
+.sec-sub {
+  margin: -4px 2px 12px;
+  font-size: 12.5px;
+  color: var(--c-text-sub);
+  line-height: 1.5;
+}
+
+/* 科普视频卡 */
+.video-card {
+  margin-top: 14px;
+  background: var(--c-card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.tick-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #0d1a18;
+}
+.video-cap {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.video-cap strong {
+  font-size: 13.5px;
+  color: var(--c-text);
+}
+.video-cap small {
+  font-size: 11.5px;
+  color: var(--c-text-sub);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+.v-credit {
+  font-size: 9.5px;
+  color: var(--c-text-weak);
+  margin-top: 6px;
+}
 
 /* 知识轮播 */
 .fact-swipe {
