@@ -30,7 +30,7 @@ export const tickGallery = [
   }
 ]
 
-// 叮咬后皮肤表现（症状识别用）
+// 叮咬后皮肤表现（症状识别用）—— 选取视觉差异明显的不同类型
 export const symptomGallery = [
   {
     src: '/media/bullseye-rash.jpg',
@@ -40,18 +40,25 @@ export const symptomGallery = [
     credit: 'Wikimedia Commons · Public domain'
   },
   {
+    src: '/media/bite-eschar.jpg',
+    title: '叮咬处黑色焦痂',
+    tag: '焦痂/结痂',
+    desc: '叮咬中心可结成黑色痂皮（焦痂），是立克次体等感染常见体征',
+    credit: 'Wikimedia Commons · Public domain'
+  },
+  {
+    src: '/media/scalp-bite.jpg',
+    title: '头皮叮咬伴周围红肿',
+    tag: '隐蔽部位',
+    desc: '头皮、耳后等隐蔽处叮咬易被忽略，可见痂膜与周围红晕',
+    credit: 'Wikimedia Commons · CC BY 4.0'
+  },
+  {
     src: '/media/erythema-thigh.jpg',
     title: '大腿游走性红斑',
     tag: '约 8 周',
     desc: '红斑可持续存在并逐渐扩大，出现应尽快就医',
     credit: 'Wikimedia Commons · CC0'
-  },
-  {
-    src: '/media/tick-rash.jpg',
-    title: '叮咬处红肿皮疹',
-    tag: '局部反应',
-    desc: '叮咬处可出现红肿、丘疹、瘙痒或结痂',
-    credit: 'Wikimedia Commons · CC BY-SA 4.0'
   }
 ]
 

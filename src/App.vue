@@ -124,7 +124,7 @@ function go(tab) {
   transform: translateY(-2px) scale(1.12);
 }
 
-/* 中间强调按钮 */
+/* 中间强调按钮：整体上移，保证凸起圆形仍在按钮可点击盒内 */
 .tab-center {
   flex: 1;
   border: none;
@@ -133,6 +133,7 @@ function go(tab) {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  margin-top: -20px;
   padding: 0 0 8px;
   position: relative;
 }
@@ -140,7 +141,6 @@ function go(tab) {
 .center-bubble {
   width: 48px;
   height: 48px;
-  margin-top: -22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
