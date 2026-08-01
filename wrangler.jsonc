@@ -1,8 +1,7 @@
 {
-  // ⚠️ name 必须与你在 Cloudflare 控制台里的项目名一致
-  // （即部署地址 https://<name>.<账户>.workers.dev 中的 <name>）。
-  // 你当前项目可能叫 doctor，请按实际情况修改。
-  "name": "doctor",
+  // Worker 名称：决定访问地址 https://<name>.<账户子域>.workers.dev 中的 <name>。
+  // 这里用见名知意的 tick-bites（蜱虫叮咬）。
+  "name": "tick-bites",
   "compatibility_date": "2025-06-05",
 
   // 纯静态站点（Vue SPA）：只把 Vite 构建产物 dist 目录作为静态资源发布，
